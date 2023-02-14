@@ -1,8 +1,8 @@
 const Telegram = require("node-telegram-bot-api");
 const { Configuration, OpenAIApi } = require("openai");
 
-const botToken = "5834991530:AAFPkF-ez_kzqxB24jinf7r_EBUUgIpZcNc";
-const openaiToken = "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";
+const botToken = process.env.BOT_TOKEN;
+const openaiToken = process.env.OPENAI_TOKEN;
 
 const config = new Configuration({
   apiKey: openaiToken,
@@ -65,4 +65,12 @@ bot.on("message", async (msg) => {
   response = response.replace("medical professional","you may want to", "it could be helpful to");
   response = response.replace("medical professional","you may consider", "it might be worth considering");
   bot.sendMessage(chatId, response);
+});
+
+// Keep the bot running continuously on Heroku
+const http = require('http');
+const port = process.env.PORT || 3000;
+const server = http.createServer(() => {});
+server.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
